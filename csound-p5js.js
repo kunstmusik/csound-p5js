@@ -64,11 +64,15 @@ function load_script(src, async) {
   document.head.appendChild(script);
 }
 
+function wasmLog(msg) {
+  console.log(msg);
+}
+
 // Initialize Module before WASM loads
 Module = {};
 Module['wasmBinaryFile'] = 'wasm/libcsound.wasm';
-Module['print'] = console.log;
-Module['printErr'] = console.log;
+Module['print'] = wasmLog;
+Module['printErr'] = wasmLog;
 Module['onRuntimeInitialized'] = onRuntimeInitialized;
 
 if(typeof WebAssembly !== undefined) {
