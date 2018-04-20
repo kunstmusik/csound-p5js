@@ -6,6 +6,7 @@
 
 // Signals when csound is loaded and used from sketch.js file
 var csoundLoaded = false;
+var cs = null;
 
 // Using ES6 template literal to put in multiline string 
 var myCsoundCode = `

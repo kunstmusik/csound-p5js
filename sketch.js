@@ -28,7 +28,6 @@ function draw() {
   background(0);
 
   if(csoundLoaded) {
-
     for(var i = 0; i < glorbs.length; i++) {
       glorbs[i].tick();
     }
@@ -81,6 +80,9 @@ function windowResized() {
 }
 
 function mousePressed() {
+  if(cs != null) {
+    cs.audioContext.resume();
+  }
   sketchFS = !sketchFS;
   fullscreen(!sketchFS);
 }
