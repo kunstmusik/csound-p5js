@@ -44,7 +44,7 @@ function onRuntimeInitialized() {
       txt + myCsoundCode);
 
       cs.start(); 
-      cs.audioContext.resume();
+      CSOUND_AUDIO_CONTEXT.resume();
       csoundLoaded = true;
     }
 
@@ -55,30 +55,7 @@ function onRuntimeInitialized() {
 }
 
 
+CsoundObj.importScripts("./csound/").then(() => {
+  onRuntimeInitialized();
+});
 
-
-
-function load_script(src, async) {
-  var script = document.createElement('script');
-  script.src = src;
-  script.async = async;
-  document.head.appendChild(script);
-}
-
-function wasmLog(msg) {
-  console.log(msg);
-}
-
-// Initialize Module before WASM loads
-Module = {};
-Module['wasmBinaryFile'] = 'wasm/libcsound.wasm';
-Module['print'] = wasmLog;
-Module['printErr'] = wasmLog;
-Module['onRuntimeInitialized'] = onRuntimeInitialized;
-
-if(typeof WebAssembly !== undefined) {
-  console.log("Using WASM Csound...");
-  load_script("wasm/libcsound.js", false);
-  load_script("wasm/FileList.js", false);
-  load_script("wasm/CsoundObj.js", false);
-} 

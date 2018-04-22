@@ -81,7 +81,7 @@ function windowResized() {
 
 function mousePressed() {
   if(cs != null) {
-    cs.audioContext.resume();
+    CSOUND_AUDIO_CONTEXT.resume();
   }
   sketchFS = !sketchFS;
   fullscreen(!sketchFS);
