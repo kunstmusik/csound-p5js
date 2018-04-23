@@ -39,6 +39,7 @@ function onRuntimeInitialized() {
     var finishLoadCsObj = function() {
       cs = new CsoundObj();
       cs.setOption("-m0");
+      cs.setOption("-odac");
       cs.compileOrc(
         "sr=48000\nksmps=32\n0dbfs=1\nnchnls=2\n" + 
       txt + myCsoundCode);
