@@ -29,33 +29,23 @@ schedule("Runner", 1, 2)
 `;
 
 // Called when Csound WASM completes loading
-function onRuntimeInitialized() {
-  var client = new XMLHttpRequest();
-  client.open('GET', 'livecode.orc', true);
-  client.onreadystatechange = function() {
-    // txt is the code from livecode.orc
-    var txt = client.responseText;
+function setupCsound() {
+  fetch('livecode.orc').then((response) => {
+    return response.text().then((txt) => {
 
-    var finishLoadCsObj = function() {
       cs = new CsoundObj();
       cs.setOption("-m0");
       cs.compileOrc(
-        "sr=48000\nksmps=32\n0dbfs=1\nnchnls=2\n" + 
-      txt + myCsoundCode);
-
+        "sr=48000\nksmps=32\n0dbfs=1\nnchnls=2\n" + txt + myCsoundCode)
       cs.start(); 
       CSOUND_AUDIO_CONTEXT.resume();
       csoundLoaded = true;
-    }
-
-    finishLoadCsObj();
-  }
-  client.send();
-
+    }); 
+  });
 }
 
 
 CsoundObj.importScripts("./csound/").then(() => {
-  onRuntimeInitialized();
+  setupCsound();
 });
 
