@@ -72,11 +72,11 @@ if(typeof AudioWorkletNode !== 'undefined' &&
       this.node.connect(this.audioContext.destination);
     }
 
-    compileCsd(filePath) {
+    compileCSD(filePath) {
       // not sure what to do about file path...
       // need to see what can be accessed in
       // worklet scope
-      this.node.port.postMessage(["compileCsd", filePath]);
+      this.node.port.postMessage(["compileCSD", filePath]);
     }
 
     compileOrc(orcString) {
@@ -136,7 +136,7 @@ if(typeof AudioWorkletNode !== 'undefined' &&
     static importScripts(script_base='./') {
       let actx = CSOUND_AUDIO_CONTEXT;
       return new Promise( (resolve) => {
-        actx.audioWorklet.addModule(script_base + 'libcsound-worklet.base64.js').then(() => {
+        actx.audioWorklet.addModule(script_base + 'libcsound-worklet.wasm.js').then(() => {
         actx.audioWorklet.addModule(script_base + 'libcsound-worklet.js').then(() => {
         actx.audioWorklet.addModule(script_base + 'CsoundProcessor.js').then(() => {
           resolve(); 
