@@ -52,6 +52,9 @@ class CsoundNode extends AudioWorkletNode {
      */
     constructor(context, options) {
         options = options || {};
+        options.numberOfInputs  = 1;
+        options.numberOfOutputs = 2;
+        options.channelCount = 2;
         
         super(context, 'Csound', options);
 
@@ -289,9 +292,11 @@ class CsoundNodeFactory {
     static importScripts(script_base='./') {
         let actx = CSOUND_AUDIO_CONTEXT;
         return new Promise( (resolve) => {
-            actx.audioWorklet.addModule(script_base + 'CsoundProcessor.js').then(() => {
-                resolve(); 
-            }) 
+            actx.audioWorklet.addModule(script_base + 'libcsound-worklet.wasm.js').then(() => {
+                actx.audioWorklet.addModule(script_base + 'libcsound-worklet.js').then(() => {
+                    actx.audioWorklet.addModule(script_base + 'CsoundProcessor.js').then(() => {
+                        resolve(); 
+                    }) }) })      
         }) 
     }
 
@@ -304,13 +309,11 @@ class CsoundNodeFactory {
     static createNode(inputChannelCount=1, outputChannelCount=2) {
         var options = {};
         options.numberOfInputs  = inputChannelCount;
-        options.numberOfOutputs = 1;
-        options.outputChannelCount = [ outputChannelCount ];
+        options.numberOfOutputs  = outputChannelCount;
         return new CsoundNode(CSOUND_AUDIO_CONTEXT, options);
     }
 }
 
 
-window.CsoundNodeFactory = CsoundNodeFactory;
 
-export default {CsoundNode, CsoundNodeFactory};
+
